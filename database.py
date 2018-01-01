@@ -1,19 +1,13 @@
 import pylast
+import json
 
 class LastFMFetcher:
 
 	def __init__(self):
-		try:
-			account_file=open("./resources/account",'r')
-			dict_info=eval('{'+(','.join(account_file.readlines()))+'}')
-			self.network=pylast.LastFMNetwork(**dict_info)
-			account_file.close()
-			return
-		except IOError as e:
-			print(e)
-			print("Lastfm account file missing at ./resources/")
-			exit(-1)
-		return
+		with open("./resources/account",'r') as account_file:
+			dict_info=json.load(account_file)
+			self.network=pylast.LastFMNetwork(**dict_info)	
+		#
 	
 	def extract(itr,attr):
 		return [item[0].__getattribute__(attr) for item in itr]

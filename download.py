@@ -1,23 +1,16 @@
 import youtube_dl as yt
+import json
 
 class Downloader:
 
 
 	def __init__(self):
-		self.downloader=None
 		
-		try:
-			config_file=open("./resources/downloaderConfig",'r')
-			dict_config=eval('{'+(','.join(config_file.readlines()))+'}')
-			self.downloader=yt.YoutubeDL(dict_config)
-			config_file.close()
-			return
-		except IOError as e:
-			print(e)
-			print("YoutubeDL config file missing at ./resources/")
-			exit(-1)
-			
-		return
+		with open("./resources/downloaderConfig",'r') as config_file:
+			dict_config=json.load(config_file)
+			print(dict_config)
+			self.downloader=yt.YoutubeDL(dict_config)	
+		#
 		
 		
 	def download(self,request):
