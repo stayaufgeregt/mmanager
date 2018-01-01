@@ -1,0 +1,5 @@
+'outtmpl'		:'../%(title)s.%(ext)s'
+'default_search':'ytsearch1'
+'format'		:'m4a'
+'extractaudio'	:1
+'noplaylist'	:1
