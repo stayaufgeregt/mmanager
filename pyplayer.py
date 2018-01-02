@@ -23,8 +23,9 @@ def musics_on_demand(downloader):
 
 def change_ytdl_params(downloader):
 	
-	menu_list=list(map(lambda param_name:(param_name,lambda:param_name),downloader.getParams()))
-
+	params=downloader.getParams()
+	
+	menu_list=list(map(lambda param_name:(param_name,lambda:param_name),params))
 	menu_list.append( ("add new parameter",lambda:"add parameter") )
 	menu_list.append( ("<-- main menu",lambda:"return") )
 	
@@ -35,12 +36,11 @@ def change_ytdl_params(downloader):
 	elif choice=="add parameter":
 		param_name=input("Parameter name : ")
 		param_value=input("Parameter value : ")
-		
-		downloader.setParam(param_name,param_value)
+		downloader.setParam(param_name,param_value)  #type of new field needs fix
 	else:
 		print(choice," : ",downloader.getParams()[choice])
 		param_value=input("New value : ")
-		downloader.setParam(choice,param_value)
+		downloader.setParam(choice,type(params[param_name])(param_value))	#cast in the same type as before
 		
 	#
 
