@@ -17,12 +17,8 @@ def Menu(title,options):
 		curses.noecho() #do not display keys on screen
 		curses.cbreak()
 		stdscreen.keypad(True)
-		
-		curses.init_pair(1,curses.COLOR_RED,curses.COLOR_YELLOW)
-		
 
 		stdscreen.clear()
-		
 		stdscreen.addstr(0,1,title,curses.A_UNDERLINE)
 		
 		for i in range(len(options)):
@@ -47,12 +43,10 @@ def Menu(title,options):
 			
 			stdscreen.addstr(currentline+2,1,"{}  -  {}".format(currentline+1,options[currentline][0]),curses.A_REVERSE)
 			stdscreen.refresh()
-			
 		curses.nocbreak()
 		stdscreen.keypad(False)
 		curses.echo()
 		curses.endwin()
-		
 		output=options[currentline][1]()
 	wrapper(main)
 	return output

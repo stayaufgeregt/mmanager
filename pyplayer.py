@@ -3,7 +3,6 @@ print("Loading...")
 import download
 import database
 import menu
-
 print("Done")
 
 
@@ -24,11 +23,12 @@ def musics_on_demand(downloader):
 
 def change_ytdl_params(downloader):
 	
-	param_list=[ (param_name,lambda:param_name) for param_name in downloader.getParams() ]
-	param_list.append( ("add parameter",lambda:"add parameter") )
-	param_list.append( ("return to main menu",lambda:"return") )
+	menu_list=list(map(lambda param_name:(param_name,lambda:param_name),downloader.getParams()))
+
+	menu_list.append( ("add new parameter",lambda:"add parameter") )
+	menu_list.append( ("<-- main menu",lambda:"return") )
 	
-	choice=menu.Menu("Youtube-dl parameters",param_list)
+	choice=menu.Menu("Youtube-dl parameters",menu_list)
 	
 	if choice=="return":
 		return
@@ -38,7 +38,7 @@ def change_ytdl_params(downloader):
 		
 		downloader.setParam(param_name,param_value)
 	else:
-		print("Previous value : ",downloader.getParams()[choice])
+		print(choice," : ",downloader.getParams()[choice])
 		param_value=input("New value : ")
 		downloader.setParam(choice,param_value)
 		
