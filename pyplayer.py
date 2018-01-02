@@ -39,8 +39,8 @@ def change_ytdl_params(downloader):
 		downloader.setParam(param_name,param_value)  #type of new field needs fix
 	else:
 		print(choice," : ",downloader.getParams()[choice])
-		param_value=input("New value : ")
-		downloader.setParam(choice,type(params[param_name])(param_value))	#cast in the same type as before
+		new_value=input("New value : ")
+		downloader.setParam(choice,type(params[choice])(new_value))	#cast in the same type as before
 		
 	#
 
