@@ -54,7 +54,9 @@ if __name__=='__main__':
 	dler=download.Downloader()
 	#network=database.LastFMFetcher()
 
-	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),("Change parameters",lambda:change_ytdl_params(dler)),("Quit",lambda:"exit")]):
+	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),\
+											("Change parameters",lambda:change_ytdl_params(dler)),\
+											("Quit",lambda:"exit")]):
 		pass
 	
 	#print(network.getSimilarTrack("limpbizkit","behind blue eyes"));

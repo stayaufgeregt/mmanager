@@ -8,7 +8,6 @@ class Downloader:
 		
 		with open("./resources/downloaderConfig",'r') as config_file:
 			dict_config=json.load(config_file)
-			print(dict_config)
 			self.downloader=yt.YoutubeDL(dict_config)	
 		#
 		
