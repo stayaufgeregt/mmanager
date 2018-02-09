@@ -47,7 +47,9 @@ def change_ytdl_params(downloader):
 
 
 def save_ytdl_params(downloader):
-	pass
+	downloader.saveParam()
+	input("SAVED SUCCESSFULLY")
+	#
 
 	
 if __name__=='__main__':
@@ -56,6 +58,7 @@ if __name__=='__main__':
 
 	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),\
 											("Change parameters",lambda:change_ytdl_params(dler)),\
+											("Save parameters",lambda:save_ytdl_params(dler)),\
 											("Quit",lambda:"exit")]):
 		pass
 	

@@ -2,7 +2,6 @@ import os
 import curses
 from curses import wrapper
 
-output=None
 
 def Menu(title,options):
 

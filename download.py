@@ -20,3 +20,9 @@ class Downloader:
 		
 	def setParam(self,param_name,param_value):
 		self.downloader.params[param_name]=param_value
+		
+	def saveParam(self):
+		
+		with open("./resources/downloaderConfig",'w') as config_file:
+			json.dump(self.getParams(),config_file)
+		#
