@@ -3,9 +3,11 @@ print("Loading...")
 import download
 import database
 import menu
+import os
 print("Done")
 
-
+currentPlaylist=None
+songId=None
 
 def musics_on_demand(downloader):
 	while True:
@@ -43,14 +45,30 @@ def change_ytdl_params(downloader):
 		downloader.setParam(choice,type(params[choice])(new_value))	#cast in the same type as before
 		
 	#
-
-
+def random_playlist(downloader):
+	global currentPlaylist
+	global songId
+	
+	currentPlaylist=list(filter(lambda s:s[-4:]==".m4a",os.listdir(downloader.getParams()["musicdir"])))
+	songId=0
+	#
 
 def save_ytdl_params(downloader):
 	downloader.saveParam()
 	input("SAVED SUCCESSFULLY")
 	#
 
+def play(downloader):
+	
+	global currentPlaylist
+	global songId
+	if currentPlaylist==None or songId==None:
+		print("Please, create playlist first")
+		return
+		
+	songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
+	print("Playing now : "+songPath)
+	os.system("play-audio \""+songPath+"\" &")
 	
 if __name__=='__main__':
 	dler=download.Downloader()
@@ -59,6 +77,8 @@ if __name__=='__main__':
 	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),\
 											("Change parameters",lambda:change_ytdl_params(dler)),\
 											("Save parameters",lambda:save_ytdl_params(dler)),\
+											("Random playlist",lambda:random_playlist(dler)),\
+											("Play current playlist",lambda:play(dler)),\
 											("Quit",lambda:"exit")]):
 		pass
 	
