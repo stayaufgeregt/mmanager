@@ -3,13 +3,9 @@ print("Loading...")
 import download
 import database
 import menu
-import os
 import subprocess
-import random
+import playlist
 print("Done")
-
-currentPlaylist=None
-songId=None
 
 def musics_on_demand(downloader):
 	while True:
@@ -47,59 +43,41 @@ def change_ytdl_params(downloader):
 		downloader.setParam(choice,type(params[choice])(new_value))	#cast in the same type as before
 		
 	#
-def load_playlist(downloader):
-	global currentPlaylist
-	global songId
-	
-	currentPlaylist=list(filter(lambda s:s[-4:]==".m4a",os.listdir(downloader.getParams()["musicdir"])))
-	songId=0
-	#
-	
-def shuffle():
-	global currentPlaylist
-	global songId
-	
-	random.shuffle(currentPlaylist)
-	songId=0
-	#
 
 def save_ytdl_params(downloader):
 	downloader.saveParam()
 	input("SAVED SUCCESSFULLY")
 	#
 
-def play(downloader):
-	global currentPlaylist
-	global songId
+def play(curPlaylist,dler):
 	
-	if currentPlaylist==None or len(currentPlaylist)==0:
-		print("Please, download musics first.")
-		return
+	code=None
 	
-	code=1
-	
-	while code!=0:
-		songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
+	while code==None:
+		songPath=dler.getParams()["musicdir"]+curPlaylist.song
 		media_process=subprocess.Popen('play-audio "'+songPath+'"',shell=True)	#opened in bg
 		
-		code=menu.Menu(str(songId)+" : "+currentPlaylist[songId][:32],[("Prev : "+currentPlaylist[songId-1][:24],lambda:-1),\
-																("Next : "+currentPlaylist[(songId+1)%len(currentPlaylist)][:24],lambda:1),\
+		code=menu.Menu(str(curPlaylist.songID)+" : "+curPlaylist.song[:36],[("Next : "+curPlaylist.next[:24],lambda:curPlaylist.change(1)),\
+																("Prev : "+curPlaylist.prev[:24],lambda:curPlaylist.change(-1)),\
 																("Quit",lambda:0)])
 		#
 		if media_process.poll()==None:
 			media_process.terminate()
-		songId=(songId+code)%len(currentPlaylist)
-	
+	#
+def blindtest(curPlaylist):
+	pass
 if __name__=='__main__':
 	dler=download.Downloader()
 	#network=database.LastFMFetcher()
-	load_playlist(dler)
+	curPlaylist=playlist.Playlist(downloader=dler)
+
 	
-	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),\
+	while "exit"!=menu.Menu("Pyplayer 0.0",[("Play current playlist",lambda:play(curPlaylist,dler)),\
+											("Download music",lambda:musics_on_demand(dler)),\
 											("Change parameters",lambda:change_ytdl_params(dler)),\
 											("Save parameters",lambda:save_ytdl_params(dler)),\
-											("shuffle playlist",lambda:shuffle(dler)),\
-											("Play current playlist",lambda:play(dler)),\
+											("shuffle playlist",curPlaylist.shuffle),\
+											("blindtest",lambda:blindtest(curPlaylist)),\
 											("Quit",lambda:"exit")]):
 		pass
 	
