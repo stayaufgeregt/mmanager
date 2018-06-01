@@ -4,6 +4,7 @@ import download
 import database
 import menu
 import subprocess
+import time
 import playlist
 print("Done")
 
@@ -64,8 +65,24 @@ def play(curPlaylist,dler):
 		if media_process.poll()==None:
 			media_process.terminate()
 	#
-def blindtest(curPlaylist):
-	pass
+def shuffle(curPlaylist):
+	curPlaylist.shuffle()
+	input("[Playlist shuffled]")
+	
+def blindtest(curPlaylist,dler):
+	blindtest_pl=curPlaylist.sample(10)
+	
+	for _ in range(blindtest_pl.songNB):
+		songPath=dler.getParams()["musicdir"]+blindtest_pl.song
+		media_process=subprocess.Popen('play-audio "'+songPath+'"',shell=True)	#opened in bg
+		time.sleep(15)
+		print(blindtest_pl.song)
+		if media_process.poll()==None:
+			media_process.terminate()
+		blindtest_pl.change(1)
+	
+	time.sleep(5)
+	#
 if __name__=='__main__':
 	dler=download.Downloader()
 	#network=database.LastFMFetcher()
@@ -76,8 +93,8 @@ if __name__=='__main__':
 											("Download music",lambda:musics_on_demand(dler)),\
 											("Change parameters",lambda:change_ytdl_params(dler)),\
 											("Save parameters",lambda:save_ytdl_params(dler)),\
-											("shuffle playlist",curPlaylist.shuffle),\
-											("blindtest",lambda:blindtest(curPlaylist)),\
+											("shuffle playlist",lambda:shuffle(curPlaylist)),\
+											("blindtest",lambda:blindtest(curPlaylist,dler)),\
 											("Quit",lambda:"exit")]):
 		pass
 	
