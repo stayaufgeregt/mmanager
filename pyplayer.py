@@ -71,12 +71,12 @@ def shuffle(curPlaylist):
 	
 def blindtest(curPlaylist,dler):
 	blindtest_pl=curPlaylist.sample(10)
-	
-	for _ in range(blindtest_pl.songNB):
+	print("\nStarting blindtest :\n")
+	for i in range(blindtest_pl.songNB):
 		songPath=dler.getParams()["musicdir"]+blindtest_pl.song
 		media_process=subprocess.Popen('play-audio "'+songPath+'"',shell=True)	#opened in bg
 		time.sleep(15)
-		print(blindtest_pl.song)
+		print(str(i)+" : "+blindtest_pl.song)
 		if media_process.poll()==None:
 			media_process.terminate()
 		blindtest_pl.change(1)
