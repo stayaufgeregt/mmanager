@@ -80,7 +80,7 @@ def blindtest(curPlaylist,dler):
 		if media_process.poll()==None:
 			media_process.terminate()
 		blindtest_pl.change(1)
-	
+	print("\nBlindtest finished !\n")
 	time.sleep(5)
 	#
 if __name__=='__main__':
