@@ -71,7 +71,7 @@ def play(downloader):
 	
 	while code:
 		songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
-		media_process=subprocess.Popen(['play-audio ',songPath,''])	#opened in bg
+		media_process=subprocess.Popen(['play-audio ',songPath,''],shell=True)	#opened in bg
 		
 		exit=menu.Menu(str(songId)+": "+currentPlaylist[songId],[("Prev : "+currentPlaylist[songId-1],lambda:-1),\
 																("Next : "+currentPlaylist[(songId+1)%len(currentPlaylist)],lambda:1),\
