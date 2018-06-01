@@ -4,6 +4,7 @@ import download
 import database
 import menu
 import os
+import subprocess
 print("Done")
 
 currentPlaylist=None
@@ -65,10 +66,20 @@ def play(downloader):
 	if currentPlaylist==None or songId==None:
 		print("Please, create playlist first")
 		return
+	
+	code=1
+	
+	while code:
+		songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
+		media_process=subprocess.Popen(['play-audio ',songPath,''])	#opened in bg
 		
-	songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
-	print("Playing now : "+songPath)
-	os.system("play-audio \""+songPath+"\" &")
+		exit=menu.Menu(str(songId)+": "+currentPlaylist[songId],[("Prev : "+currentPlaylist[songId-1],lambda:-1),\
+																("Next : "+currentPlaylist[(songId+1)%len(currentPlaylist)],lambda:1),\
+																("Quit",lambda:0)])
+		#
+		if media_process.poll()==None:
+			media_process.terminate()
+		songId+=code
 	
 if __name__=='__main__':
 	dler=download.Downloader()
