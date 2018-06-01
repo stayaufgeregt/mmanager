@@ -5,6 +5,7 @@ import database
 import menu
 import os
 import subprocess
+import random
 print("Done")
 
 currentPlaylist=None
@@ -46,11 +47,19 @@ def change_ytdl_params(downloader):
 		downloader.setParam(choice,type(params[choice])(new_value))	#cast in the same type as before
 		
 	#
-def random_playlist(downloader):
+def load_playlist(downloader):
 	global currentPlaylist
 	global songId
 	
 	currentPlaylist=list(filter(lambda s:s[-4:]==".m4a",os.listdir(downloader.getParams()["musicdir"])))
+	songId=0
+	#
+	
+def shuffle():
+	global currentPlaylist
+	global songId
+	
+	random.shuffle(currentPlaylist)
 	songId=0
 	#
 
@@ -60,11 +69,11 @@ def save_ytdl_params(downloader):
 	#
 
 def play(downloader):
-	
 	global currentPlaylist
 	global songId
-	if currentPlaylist==None or songId==None:
-		print("Please, create playlist first")
+	
+	if currentPlaylist==None or len(currentPlaylist)==0:
+		print("Please, download musics first.")
 		return
 	
 	code=1
@@ -73,8 +82,8 @@ def play(downloader):
 		songPath=downloader.getParams()["musicdir"]+currentPlaylist[songId]
 		media_process=subprocess.Popen('play-audio "'+songPath+'"',shell=True)	#opened in bg
 		
-		code=menu.Menu(str(songId)+": "+currentPlaylist[songId],[("Prev : "+currentPlaylist[songId-1][:16],lambda:-1),\
-																("Next : "+currentPlaylist[(songId+1)%len(currentPlaylist)][:16],lambda:1),\
+		code=menu.Menu(str(songId)+" : "+currentPlaylist[songId][:32],[("Prev : "+currentPlaylist[songId-1][:24],lambda:-1),\
+																("Next : "+currentPlaylist[(songId+1)%len(currentPlaylist)][:24],lambda:1),\
 																("Quit",lambda:0)])
 		#
 		if media_process.poll()==None:
@@ -84,11 +93,12 @@ def play(downloader):
 if __name__=='__main__':
 	dler=download.Downloader()
 	#network=database.LastFMFetcher()
-
+	load_playlist(dler)
+	
 	while "exit"!=menu.Menu("Pyplayer 0.0",[("Download music",lambda:musics_on_demand(dler)),\
 											("Change parameters",lambda:change_ytdl_params(dler)),\
 											("Save parameters",lambda:save_ytdl_params(dler)),\
-											("Random playlist",lambda:random_playlist(dler)),\
+											("shuffle playlist",lambda:shuffle(dler)),\
 											("Play current playlist",lambda:play(dler)),\
 											("Quit",lambda:"exit")]):
 		pass
