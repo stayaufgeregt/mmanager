@@ -1,6 +1,17 @@
 import os
 import random
 
+AUDIO_FORMATS=['m4a','mp3','wav']
+def format(s):
+	if len(s)<5:
+		return False
+	if s[-4]!='.':
+		return False
+	if s[-3:] in AUDIO_FORMATS:
+		return True
+		
+	return False
+	
 class Playlist:
 	
 	def __init__(self,**kwargs):
@@ -13,18 +24,18 @@ class Playlist:
 	def load(self,**kwargs):
 		
 		if kwargs.get("downloader"):
-			self.playlist=list(filter(lambda s:s[-4:]==".m4a",os.listdir(kwargs["downloader"].getParams()["musicdir"])))
+			self.playlist=list(filter(format,os.listdir(kwargs["downloader"].getParams()["musicdir"])))
 		elif kwargs.get("playlist"):
 			self.playlist=kwargs["playlist"]
 			
 		self.songID=0
 		self.songNB=len(self.playlist)
-		if self.playlist==None or self.songNB==0:
-			print("You need songs")
-			exit(1)
+
 		
 	#
-	
+	def empty(self):
+		return self.playlist is None or self.songNB<=0
+		
 	@property
 	def song(self):
 		return self.playlist[self.songID]

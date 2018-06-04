@@ -51,7 +51,10 @@ def save_ytdl_params(downloader):
 	#
 
 def play(curPlaylist,dler):
-	
+	if curPlaylist.empty():
+		input("Playlist is empty\n")
+		return
+		
 	code=None
 	
 	while code==None:
@@ -70,6 +73,10 @@ def shuffle(curPlaylist):
 	input("[Playlist shuffled]")
 	
 def blindtest(curPlaylist,dler):
+	if curPlaylist.empty():
+		input("Playlist is empty\n")
+		return
+		
 	blindtest_pl=curPlaylist.sample(10)
 	print("\nStarting blindtest :\n")
 	for i in range(blindtest_pl.songNB):
