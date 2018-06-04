@@ -13,7 +13,9 @@ def Menu(title,options):
 		
 		currentline=0
 		
+		
 		curses.noecho() #do not display keys on screen
+		curses.flushinp() #flush input buffer
 		curses.cbreak()
 		stdscreen.keypad(True)
 
