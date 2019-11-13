@@ -1,1 +1,0 @@
-{"noplaylist": 1, "format": "m4a","default_search": "ytsearch1", "musicdir": "../../", "outtmpl": "../%(title)s.%(ext)s", "nocheckcertificate": false, "extractaudio": 1}
